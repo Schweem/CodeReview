@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Logged in</title>
+    </head>
+
+    <body>
+        <h1>Hello, World!</h1>
+        <p> you are logged in as {{ request.user }}</p>
+
+        <hr>
+        <p>new post </p>
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <button type="submit">Post</button>
+        </form>
+        <hr>
+
+        <h2>Posts</h2>
+            <ul>
+                {% if Posts %}
+                    {% for post in Posts %}
+                        <li>
+                            {{post.title}} - {{ post.content }} - <strong>{{ post.likes }} likes, </strong>
+                            {{ post.created_at }}
+                            <form method="POST" action="{% url 'like' post.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{ post.id }}">
+                                <button type="submit">Like</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li>No posts yet</li>
+                {% endif %}
+            </ul>
+    </body>
+</html>
