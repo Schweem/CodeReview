@@ -4,26 +4,36 @@
     </head>
 
     <body>
+        <!-- Welcome text -->
         <h1>Hello, World!</h1>
         <p> you are logged in as {{ request.user }}</p>
 
+        <!-- line to separate this mess -->
         <hr>
+
         <p>new post </p>
         <form method="POST">
+            <!-- CSRF token and form for making post -->
             {% csrf_token %}
-
             {{ form.as_p }}
             <button type="submit">Post</button>
         </form>
+
+        <!-- another one -->
         <hr>
 
+        <!-- display posts -->
         <h2>Posts</h2>
             <ul>
+                <!-- check that they've been passed -->
                 {% if Posts %}
+                <!-- loop through posts -->
                     {% for post in Posts %}
                         <li>
+                            <!-- Display post information-->
                             {{post.title}} - {{ post.content }} - <strong>{{ post.likes }} likes, </strong>
                             {{ post.created_at }}
+                            <!-- button for liking post -->
                             <form method="POST" action="{% url 'like' post.id %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="post_id" value="{{ post.id }}">
@@ -31,6 +41,7 @@
                             </form>
                         </li>
                     {% endfor %}
+                <!-- no posts, no posts -->
                 {% else %}
                     <li>No posts yet</li>
                 {% endif %}
